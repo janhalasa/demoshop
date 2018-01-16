@@ -1,0 +1,42 @@
+spring:
+    datasource:
+        url: jdbc:h2:mem:appdb;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password:
+        driver-class-name: org.h2.Driver
+
+    h2:
+        console:
+            enabled: true
+            path: /db
+    jpa:
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+        open-in-view: false
+    jackson:
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: false
+
+flyway:
+    locations: db/migration
+
+server:
+    port: 8080
+    tomcat:
+        max-http-post-size: 10_000_000 # 10MB
+
+security:
+    openIdConnect:
+        google:
+            clientId: 980007172606-peqhflas187204vrvkk9b8qk54k72gli.apps.googleusercontent.com
+
+    localJwt:
+        issuer: http://halasa.com/jwt/issuer
+        rsa:
+            public-key-file: etc/rsa-public-key.der
+            private-key-file: etc/rsa-private-key.der

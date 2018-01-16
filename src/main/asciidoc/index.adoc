@@ -1,0 +1,345 @@
+:revnumber: {version}
+:revdate: {localdate}
+:toc: left
+
+[[toc-anchor]]
+
+:doctype: article
+:numbered:
+:sectanchors:
+:sectlinks:
+:toclevels: 4
+:source-highlighter: highlightjs
+:highlightjs-theme: solarized_dark
+
+= REST API Documentation
+
+This is an example output for a service running at http://localhost:8080:
+
+== Product
+
+=== Get product
+
+.Request example
+include::{snippets}/product-get/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/product-get/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/product-get/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/product-get/http-response.adoc[]
+
+.Response fields
+include::{snippets}/product-get/response-fields.adoc[]
+
+=== Get product picture
+
+.Request example
+include::{snippets}/product-picture-get/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/product-picture-get/path-parameters.adoc[]
+
+.Response example
+include::{snippets}/product-picture-get/http-response.adoc[]
+
+.Response fields
+include::{snippets}/product-picture-get/response-fields.adoc[]
+
+=== Search products
+
+.Request example
+include::{snippets}/product-search/http-request.adoc[]
+
+.Request parameters
+include::{snippets}/product-search/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/product-search/http-response.adoc[]
+
+.Response fields
+include::{snippets}/product-search/response-fields.adoc[]
+
+=== Create product
+
+.Request example
+include::{snippets}/product-create/http-request.adoc[]
+
+.Request parameters
+include::{snippets}/product-create/request-parameters.adoc[]
+
+.Request fields
+include::{snippets}/product-create/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/product-create/response-fields.adoc[]
+
+.Response example
+include::{snippets}/product-create/http-response.adoc[]
+
+=== Update product
+
+.Request example
+include::{snippets}/product-update/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/product-update/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/product-update/request-parameters.adoc[]
+
+.Request fields
+include::{snippets}/product-update/request-fields.adoc[]
+
+.Response example
+include::{snippets}/product-update/http-response.adoc[]
+
+.Response fields
+include::{snippets}/product-update/response-fields.adoc[]
+
+=== Delete product
+
+.Request example
+include::{snippets}/product-delete/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/product-delete/path-parameters.adoc[]
+
+.Response example
+include::{snippets}/product-delete/http-response.adoc[]
+
+== Picture
+
+=== Create picture
+
+Creates a new picture returning its reference, which can be used for associating a product or a customer with the picture.
+The reference can be used only once.
+
+.Request example
+include::{snippets}/picture-create/http-request.adoc[]
+
+.Request fields
+include::{snippets}/picture-create/request-fields.adoc[]
+
+.Response example
+include::{snippets}/picture-create/http-response.adoc[]
+
+.Response fields
+include::{snippets}/picture-create/response-fields.adoc[]
+
+
+== Customer
+
+=== Get customer
+
+.Request example
+include::{snippets}/customer-get/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/customer-get/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/customer-get/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/customer-get/http-response.adoc[]
+
+.Response fields
+include::{snippets}/customer-get/response-fields.adoc[]
+
+=== Get customer picture
+
+.Request example
+include::{snippets}/customer-picture-get/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/customer-picture-get/path-parameters.adoc[]
+
+.Response example
+include::{snippets}/customer-picture-get/http-response.adoc[]
+
+.Response fields
+include::{snippets}/customer-picture-get/response-fields.adoc[]
+
+=== Search customers
+
+.Request example
+include::{snippets}/customer-search/http-request.adoc[]
+
+.Request parameters
+include::{snippets}/customer-search/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/customer-search/http-response.adoc[]
+
+.Response fields
+include::{snippets}/customer-search/response-fields.adoc[]
+
+=== Create customer
+
+.Request example
+include::{snippets}/customer-create/http-request.adoc[]
+
+.Request parameters
+include::{snippets}/customer-create/request-parameters.adoc[]
+
+.Request fields
+include::{snippets}/customer-create/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/customer-create/response-fields.adoc[]
+
+.Response example
+include::{snippets}/customer-create/http-response.adoc[]
+
+=== Update customer
+
+.Request example
+include::{snippets}/customer-update/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/customer-update/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/customer-update/request-parameters.adoc[]
+
+.Request fields
+include::{snippets}/customer-update/request-fields.adoc[]
+
+.Response example
+include::{snippets}/customer-update/http-response.adoc[]
+
+.Response fields
+include::{snippets}/customer-update/response-fields.adoc[]
+
+=== Delete customer
+
+.Request example
+include::{snippets}/customer-delete/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/customer-delete/path-parameters.adoc[]
+
+.Response example
+include::{snippets}/customer-delete/http-response.adoc[]
+
+== Order
+
+=== Get order
+
+.Request example
+include::{snippets}/order-get/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/order-get/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/order-get/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/order-get/http-response.adoc[]
+
+.Response fields
+include::{snippets}/order-get/response-fields.adoc[]
+
+=== Search orders
+
+.Request example
+include::{snippets}/order-search/http-request.adoc[]
+
+.Request parameters
+include::{snippets}/order-search/request-parameters.adoc[]
+
+.Response example
+include::{snippets}/order-search/http-response.adoc[]
+
+.Response fields
+include::{snippets}/order-search/response-fields.adoc[]
+
+=== Create order
+
+.Request example
+include::{snippets}/order-create/http-request.adoc[]
+
+.Request fields
+include::{snippets}/order-create/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/order-create/response-fields.adoc[]
+
+.Response example
+include::{snippets}/order-create/http-response.adoc[]
+
+=== Update order
+
+.Request example
+include::{snippets}/order-update/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/order-update/path-parameters.adoc[]
+
+.Request fields
+include::{snippets}/order-update/request-fields.adoc[]
+
+.Response example
+include::{snippets}/order-update/http-response.adoc[]
+
+.Response fields
+include::{snippets}/order-update/response-fields.adoc[]
+
+=== Delete order
+
+.Request example
+include::{snippets}/order-delete/http-request.adoc[]
+
+.Path parameters
+include::{snippets}/order-delete/path-parameters.adoc[]
+
+.Response example
+include::{snippets}/order-delete/http-response.adoc[]
+
+== Authentication
+
+=== Token
+
+Creates a JWT for an authenticated user. The JWT can be used for authentication in other parts of the application API.
+
+.Request example
+include::{snippets}/auth-createToken/http-request.adoc[]
+
+.Request headers
+include::{snippets}/auth-createToken/request-headers.adoc[]
+
+.Response example
+include::{snippets}/auth-createToken/http-response.adoc[]
+
+.Response fields
+include::{snippets}/auth-createToken/response-fields.adoc[]
+
+=== Token renewal
+
+Token renewal is useful for long running applications, so the user doesn't have to enter credentials every time the token expires.
+This endpoint can also be used to exchange an external ID token for a local JWT. It can come handy for client applications,
+so they don't need to handle different kinds of tokens and renewal strategies.
+
+.Request example
+include::{snippets}/auth-renewToken/http-request.adoc[]
+
+.Response example
+include::{snippets}/auth-renewToken/http-response.adoc[]
+
+.Response fields
+include::{snippets}/auth-renewToken/response-fields.adoc[]
+
+=== Token revocation
+
+Revokes the token used for the request.
+
+.Request example
+include::{snippets}/auth-revokeToken/http-request.adoc[]
+
+.Response example
+include::{snippets}/auth-revokeToken/http-response.adoc[]

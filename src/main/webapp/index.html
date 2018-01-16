@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <script>
+        var goToGoogleAuth = function() {
+            var url = 'https://accounts.google.com/o/oauth2/v2/auth'
+                + '?scope=' + encodeURIComponent('openid profile email')
+                + '&state=' + encodeURIComponent('state_parameter_passthrough_value')
+                + '&nonce=' + encodeURIComponent('nonce123')
+                + '&redirect_uri=' + encodeURIComponent('http://localhost:8080/oauth2callback.html')
+                + '&response_type=' + encodeURIComponent('id_token')
+                + '&client_id=' + encodeURIComponent('980007172606-peqhflas187204vrvkk9b8qk54k72gli.apps.googleusercontent.com');
+            document.location.href = url;
+            return false;
+        }
+
+        var test = function() {
+            jQuery.get('/api/v1/products', function(data) {
+                console.log(data);
+            });
+        }
+    </script>
+
+    <form method="get" action="#">
+        <button type="button" onclick="goToGoogleAuth()">Login</button>
+
+        <button type="button" onclick="test()">Request protected resource</button>
+        See JavaScript console (Ctrl+Shift+i or F12)
+    </form>
+
+    <ul>
+        <li><a href="/db">H2 DB Console</a></li>
+        <li><a href="/swagger-ui.html">Swagger Documentation</a></li>
+    </ul>
+
+</body>
+</html>
