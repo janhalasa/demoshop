@@ -5,6 +5,7 @@ import com.halasa.demoshop.api.dto.PictureRestDto;
 import com.halasa.demoshop.api.dto.ProductRestDto;
 import com.halasa.demoshop.api.dto.response.ListResponse;
 import com.halasa.demoshop.app.security.Roles;
+import com.halasa.demoshop.rest.ErrorCode;
 import com.halasa.demoshop.rest.FetchListParser;
 import com.halasa.demoshop.rest.OrderByParser;
 import com.halasa.demoshop.rest.mapper.PictureRestMapper;
@@ -15,6 +16,7 @@ import com.halasa.demoshop.service.domain.Product;
 import com.halasa.demoshop.service.repository.ListResult;
 import com.halasa.demoshop.service.repository.PictureRepository;
 import com.halasa.demoshop.service.repository.ProductRepository;
+import com.halasa.demoshop.service.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -103,18 +106,35 @@ public class ProductController {
 
     @GetMapping(value = ProductRestPaths.SEARCH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ListResponse<ProductRestDto> searchProducts(
+            @RequestParam(required = false) String fulltext,
             @RequestParam(required = false) String filter,
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer offset,
             @RequestParam(required = false) String fetch,
             @RequestParam(required = false) String orderBy) {
 
-        final ListResult<Product> listResult = this.productRepository.search(
-                Optional.ofNullable(filter),
-                Optional.ofNullable(limit),
-                Optional.ofNullable(offset),
-                this.fetchListParser.parse(fetch),
-                this.orderByParser.parse(orderBy));
+        if (fulltext != null && (filter != null || orderBy != null)) {
+            throw new ValidationException(ErrorCode.INVALID_API_USAGE,
+                    "You cannot combine fulltext search with RSQL filter or orderBy fields.");
+        }
+
+        List<String> fetches = this.fetchListParser.parse(fetch);
+
+        final ListResult<Product> listResult;
+        if (fulltext != null) {
+            listResult = this.productRepository.fulltextSearch(
+                    fulltext,
+                    Optional.ofNullable(limit),
+                    Optional.ofNullable(offset),
+                    fetches);
+        } else {
+            listResult = this.productRepository.search(
+                    Optional.ofNullable(filter),
+                    Optional.ofNullable(limit),
+                    Optional.ofNullable(offset),
+                    fetches,
+                    this.orderByParser.parse(orderBy));
+        }
 
         return new ListResponse<ProductRestDto>(
                 listResult.getResults().stream()

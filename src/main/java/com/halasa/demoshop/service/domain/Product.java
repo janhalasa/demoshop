@@ -1,6 +1,8 @@
 package com.halasa.demoshop.service.domain;
 
 import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,20 +15,24 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Entity
+@Indexed
 @Table(name = "PRODUCT")
 @Proxy(lazy = false)
 public class Product extends BasicEntity {
 
     @Column(name = "CODE")
     @Size(max = 255)
+    @Field
     private String code;
 
     @Column(name = "NAME")
     @Size(max = 255)
+    @Field
     private String name;
 
     @Column(name = "DESCRIPTION")
     @Size(max = 4000)
+    @Field
     private String description;
 
     @Column(name = "PRICE_WITHOUT_VAT")

@@ -1,6 +1,7 @@
 package com.halasa.demoshop.service.domain;
 
 import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,15 +19,18 @@ import java.util.List;
 public class Customer extends BasicEntity {
 
     @Column(name = "FIRST_NAME")
+    @Field
     private String firstName;
 
     @Column(name = "LAST_NAME")
+    @Field
     private String lastName;
 
     @Column(name = "TELEPHONE")
     private String telephone;
 
     @Column(name = "EMAIL")
+    @Field
     private String email;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

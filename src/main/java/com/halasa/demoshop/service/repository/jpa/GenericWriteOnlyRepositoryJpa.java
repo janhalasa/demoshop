@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -56,6 +57,13 @@ public class GenericWriteOnlyRepositoryJpa implements GenericWriteOnlyRepository
     @Override
     public <T> void removeAll(Class<T> entityClass) {
         final String entityName = JpaUtils.getEntityName(entityClass);
-        this.em.createQuery("DELETE FROM " + entityName).executeUpdate();
+
+        // We cannot use a DELETE query here, because it breaks the Hibernate Search index.
+        // If this method is used in production, it would be good to make it smarter - run batch DELETE on non-indexed entities
+        // or recreate the index after batch deleting all entities.
+
+        // this.em.createQuery("DELETE FROM " + entityName).executeUpdate();
+        List<T> resultList = this.em.createQuery("SELECT t FROM " + entityName + " t").getResultList();
+        resultList.forEach(t -> this.em.remove(t));
     }
 }

@@ -1,10 +1,12 @@
 package com.halasa.demoshop.service.repository.jpa;
 
+import com.halasa.demoshop.service.validation.UnsupportedAssociationFetchException;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.Subgraph;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,6 +17,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import java.util.List;
 
 /**
  * This class was taken from (just methods needed in this project)
@@ -23,6 +26,8 @@ import javax.persistence.criteria.Selection;
  * @author Jose Luis Martin, Ján Halaša
  */
 public class JpaUtils {
+
+    public static final String JAVAX_PERSISTENCE_LOADGRAPH = "javax.persistence.loadgraph";
 
     private static volatile int aliasCount = 0;
 
@@ -208,4 +213,5 @@ public class JpaUtils {
             }
         }
     }
+
 }

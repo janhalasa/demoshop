@@ -71,6 +71,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <version>5.6.1.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>fr.xebia.extras</groupId>

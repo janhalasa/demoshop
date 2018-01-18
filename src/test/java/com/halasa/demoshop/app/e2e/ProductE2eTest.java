@@ -17,6 +17,8 @@ import com.halasa.demoshop.service.repository.PictureRepository;
 import com.halasa.demoshop.service.repository.ProductRepository;
 import com.halasa.demoshop.test.fixture.PictureFixtures;
 import com.halasa.demoshop.test.fixture.ProductFixtures;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
@@ -226,7 +229,8 @@ public class ProductE2eTest extends EndToEndTestBase {
     }
 
     private Product createProduct(Product product) {
-        return genericWriteOnlyRepository.save(product);
+        genericWriteOnlyRepository.persist(product);
+        return product;
     }
 
     @Test
@@ -320,5 +324,75 @@ public class ProductE2eTest extends EndToEndTestBase {
         Assert.assertEquals(1, productResponse.getResults().size());
         Assert.assertEquals(product.getName(), productResponse.getResults().get(0).getName());
         Assert.assertEquals(product.getId(), productResponse.getResults().get(0).getId());
+    }
+
+    @Test
+    @WithMockUser
+    public void testFulltextSearchSingleWord() throws Exception {
+        ListResponse<ProductRestDto> response = fulltextSearch("Canon");
+        Assert.assertEquals(2, response.getResults().size());
+    }
+
+    @Test
+    @WithMockUser
+    public void testFulltextSearchMultipleWords() throws Exception {
+        ListResponse<ProductRestDto> response = fulltextSearch("Canon camera");
+        Assert.assertEquals(2, response.getResults().size());
+    }
+
+    @Test
+    @WithMockUser
+    public void testFulltextSearchNoResult() throws Exception {
+        ListResponse<ProductRestDto> response = fulltextSearch("Something else");
+        Assert.assertEquals(0, response.getResults().size());
+    }
+
+//    @Autowired
+//    private EntityManager entityManager;
+
+    private ListResponse<ProductRestDto> fulltextSearch(String searchedTerm) throws Exception {
+
+//        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+//        fullTextEntityManager.createIndexer().startAndWait();
+
+        this.createProduct(ProductFixtures.builder()
+                .code("c-5D")
+                .name("Canon 5D Mark IV")
+                .description("The Canon EOS 5D series is arguably one of the most recognizable camera lines of the digital age and "
+                        + "the Mark IV is designed to appeal to the same wide range of enthusiasts and professionals.")
+                .build());
+        this.createProduct(ProductFixtures.builder()
+                .code("c-M5")
+                .name("Canon EOS M5")
+                .description("The EOS M5 is the most enthusiast-friendly EOS M yet. It's a 24MP mirrorless camera built around "
+                        + "a Dual Pixel APS-C sensor, giving it depth-aware focus across most of the frame.")
+                .build());
+        this.createProduct(ProductFixtures.builder()
+                .code("n-850")
+                .name("Nikon D850")
+                .description("The Nikon D850 is Nikon's latest high resolution full-frame DSLR, boasting a 46MP backside-illuminated CMOS "
+                        + "sensor. This combination of properties should significantly widen the camera's appeal to high-end enthusiasts "
+                        + "as well as a broad range of professional photographers.")
+                .build());
+
+        final URI uri = UriComponentsBuilder.fromPath(ProductRestPaths.SEARCH)
+                .queryParam("fulltext", searchedTerm)
+                .queryParam("limit", 3)
+                .queryParam("offset", 0)
+                .queryParam("fetch", "picture")
+                .build().encode().toUri();
+
+        final MvcResult mvcResult = this.mockMvc
+                .perform(get(uri).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ListResponse<ProductRestDto> productResponse = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                new TypeReference<ListResponse<ProductRestDto>>() {});
+
+        productResponse.getResults().forEach(productRestDto -> System.out.println(productRestDto.getCode()));
+
+        return productResponse;
     }
 }

@@ -1,6 +1,7 @@
 package com.halasa.demoshop.service.domain;
 
 import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class Picture extends BasicEntity {
 
     @Column(name = "NAME")
+    @Field
     private String name;
 
     @Column(name = "WIDTH")
