@@ -7,9 +7,9 @@ import com.halasa.demoshop.app.security.jwt.JwtSecurityFilter;
 import com.halasa.demoshop.app.security.jwt.JwtVerifier;
 import com.halasa.demoshop.service.RevokedTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class SecurityConfiguration {
                     .antMatcher(AuthRestPaths.TOKEN)
                     .authorizeRequests().anyRequest().authenticated()
                     .and().httpBasic().realmName(REALM)
-                    .and().exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint("Authenticate"))
+                    .and().exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                     .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         }
@@ -71,7 +72,7 @@ public class SecurityConfiguration {
 
         @Override
         protected void configure(HttpSecurity httpSecurity) throws Exception {
-            final AuthenticationEntryPoint authenticationEntryPoint = new Http401AuthenticationEntryPoint("Authenticate");
+            final AuthenticationEntryPoint authenticationEntryPoint = new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
             final JwtSecurityFilter jwtSecurityFilter = new JwtSecurityFilter(
                     this.jwtVerifiers,
                     authenticationEntryPoint,

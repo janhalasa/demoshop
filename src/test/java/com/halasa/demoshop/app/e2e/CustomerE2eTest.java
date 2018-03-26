@@ -138,6 +138,9 @@ public class CustomerE2eTest extends EndToEndTestBase {
     public void testUpdate() throws Exception {
         final Customer originalCustomer = createCustomer(CustomerFixtures.some());
 
+        // Sleep to make sure the creation/update times are not the same after update
+        Thread.sleep(10);
+
         final CustomerRestDto customerUpdateRequest = this.customerRestMapper.asCustomerRestDto(CustomerFixtures.some());
         customerUpdateRequest.setId(originalCustomer.getId());
         customerUpdateRequest.setEntityVersion(originalCustomer.getEntityVersion());
@@ -155,7 +158,9 @@ public class CustomerE2eTest extends EndToEndTestBase {
         this.assertCustomerOwnFieldsEqual(this.customerRestMapper.asCustomer(customerUpdateRequest), customerResponse);
 
         Assert.assertEquals(customerUpdateRequest.getId(), customerResponse.getId());
-        Assert.assertTrue(originalCustomer.getUpdatedAt().isBefore(customerResponse.getUpdatedAt()));
+        Assert.assertEquals(originalCustomer.getCreatedAt(), originalCustomer.getUpdatedAt());
+        Assert.assertTrue(originalCustomer.getUpdatedAt() + " not before " + customerResponse.getUpdatedAt(),
+                originalCustomer.getUpdatedAt().isBefore(customerResponse.getUpdatedAt()));
         Assert.assertEquals(new Long(customerUpdateRequest.getEntityVersion() + 1L), customerResponse.getEntityVersion());
     }
 
